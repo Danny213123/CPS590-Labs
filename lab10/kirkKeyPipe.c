@@ -22,14 +22,14 @@ int main(void)
 
     while(fgets(buf, MAX_BUF_SIZE, stdin) != NULL) {
         int len = strlen(buf);
+	
+	if (buf[len-1] == '\n')
+		buf[len-1] = '\0';
 
-        if (buf[len-1] == '\n')
-                buf[len-1] = '\0';
-
-        if (write(fd, buf, len + 1) == -1){
-                perror("write");
-                exit(EXIT_FAILURE);
-        }
+	if (write(fd, buf, len + 1) == -1){
+		perror("write");
+		exit(EXIT_FAILURE);
+	}
     }
 
     close(fd);
@@ -37,3 +37,4 @@ int main(void)
 
     return 0;
 }
+

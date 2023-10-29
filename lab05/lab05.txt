@@ -1,0 +1,41 @@
+Lab05  
+
+There are 2 files to submit for this lab.
+Incorrectly named files are not graded and recieve zero.
+
+Submit: lab05q1.c, lab05q2.c
+
+DBserver.c contains a RACE CONDITION on variable total_queries
+As demonstrated in class, the program does not always calaulate
+total_queries as 3036; it is sometimes less than 3036 because of
+the race condition.  Shell program runDBserver.sh runs it 100
+times, and usually finds at least one run manifesting the race
+condition.
+Note that DBserver.c uses "threads" managed by the kernel (OS). 
+
+1. Copy DBserver.c into a file in your filespace named lab05q1.c
+   Modify lab05q1.c so that it has the same functionality as 
+   DBserver.c except that it uses pthreads for its threads. 
+
+   "Clean up" your new code to make it more clear and concise. 
+   - you can join threads much more simply. Actually, you HAVE to, 
+     given this statement from "man pthread_join":
+       There is no pthreads analog of waitpid(-1, &status, 0), that is, 
+       "join with any terminated thread".  If you believe you need this  
+       functionality,  you  probably  need  to rethink your application 
+       design.
+   Verify that the same race condition can also occur in your lab05q1.c
+   i.e., run it until you see it print the "wrong" output. You might want
+   to use a modified version of runDBserver.sh 
+
+2. Read about MUTEXES in:
+   http://www.yolinux.com/TUTORIALS/LinuxTutorialPosixThreads.html#SYNCHRONIZATION
+   You only need to read the MUTEX part for this lab.
+   
+   Copy your file lab05q1.c to lab05q2.c, and then modify lab05q2.c to 
+   eliminate the race condition by using an appropriate mutex.
+
+   Verify your program will always correctly print 3036 when it is run 100 
+   times in a row, using a modified version of runDBserver.sh 
+
+   

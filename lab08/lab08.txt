@@ -1,0 +1,130 @@
+Lab 08
+
+There are 3 files to submit for this lab:
+lab08Answers.txt
+kirkKey.c 
+spockKey.c
+
+Type your answers to the following questions into a file named
+lab08Answers.txt. Questions: 3,4,5,8a,10a
+
+Message Passing in Linux
+
+1. This lab uses System V message queues. Functions needed are:
+   msgsnd - send a message
+   msgrcv - receive a message
+   msgget - connect to (make) a message queue
+
+   Understand how to use them by reading this:
+      https://beej.us/guide/bgipc/html/split/mq.html#mq
+   or this, if the above is off-line (same content):
+      https://www.cs.torontomu.ca/~dwoit/MessageQueues.html
+
+
+   Use man pages to get info on particular functions. 
+   You could also use any web-based man page you prefer, such as
+     http://linux.die.net/man/2/msgsnd 
+
+   Example:
+     -programs kirk.c and spock.c in this directory (copied from
+      the beej guide above)
+
+2. Copy programs kirk.c and spock.c into your filespace, and compile 
+   them into executables: kirk and spock
+
+   Open 2 shell windows on the same moon (see "MACHINES" below).
+   In the first window, 
+      -run kirk
+      -enter several lines, but DO NOT do ctrl-d yet!!, then...
+   In the second window,
+      -run spock
+
+   Notice spock immediately reads all the pending messages from kirk.
+   Now make kirk give some more orders before he ends (ctrl-d).
+
+3. When kirk terminated, why did spock also terminate?
+   
+4. Try starting spock first. What "output" does it give? Why?
+
+5. Start kirk in one window, then spock in another. 
+   Make kirk give some orders.
+   Now try to end spock with ctrl-d. It won't end. Why?
+   Now send kirk ctrl-d to make kirk (and spock) end.
+
+6. Copy kirk.c and spock.c to kirkKey.c and spockKey.c
+   Modify kirkKey.c and spockKey.c so that they each use an integer key given as 
+   a command-line argument. i.e., they do not use ftok to get a key; instead the 
+   key is given in the string argv[1]. (Your program terminates immediately if no 
+   command line argument is given, or if the command line argument is not an
+   integer.) Make sure your programs work.
+
+7. Find a partner. Have each of you logged into the same host (e.g. elara).
+     [Note that the "hostname" command shows your machine. You need to login to 
+      a particular machine you can do: ssh user@machine.cs.torontomu.ca  
+      so dwoit would do:             ssh dwoit@elara.cs.torontomu.ca ]
+   Explain why your partner's spockKey can't receive orders from your kirkKey,
+   even when the correct key is used.
+
+8. (a) What modifications are required to kirkKey.c and spockKey.c so that your
+   partner's spockKey can receive orders from your kirkKey? 
+   (b) Double-check the correctness of your answer by trying it out (create some
+   test programs with your proposed modifications and make sure your partner's 
+   spock can receive messages from your kirk.)
+
+9. (a) Any message queues you make will continue to exist until they are explicitly
+   deleted. How does kirk.c and/or spock.c delete the message queue?
+
+   (b) You can display a list of message queues you have open using command:
+   ipcs -q
+   (Items you own will have your userid under "owner").
+   You can manually delete a message queue using the command:
+   ipcrm -q msqid
+   where "msqid" is the message queue ID number shown in the output of the ipcs 
+   command. If you ever ctrl-c'd one of your kirk* processes, you probably have
+   old message queues hanging around, and should delete them.
+
+   Try starting a kirk and, from another window (on same machine) run ipcs -q
+   to see kirk's message queue (and its number). From the second window delete the
+   message queue using ipcrm -q msqid
+   Now try to make kirk give some commands.
+   What happens?
+
+
+10. Make several shell windows. Try running a kirkKey in one window, and in each
+    of 3 different windows, run a spockKey and run as follows:
+    (a)
+    Start kirk, but don't have him send any commands yet; 
+    Start all the spocks. 
+    Have Kirk issue commands one-at-a-time and observe which spocks receive those
+    commands.
+    What can this tell you about the process scheduling? How is process blocking 
+    involved?
+    (b)
+    Start kirk and spocks as above, but then copy-paste a whack of commands into
+    the kirk window and observe  which spocks receive those commands.
+    What can this tell you about the process scheduling?
+
+
+MACHINES:
+  Your two shell windows must both be on the same machine (same moon).
+  To check which moon you're on, use the linux command:
+  > hostname
+  If you find your windows are on 2 different moons, then ssh so they're
+  both on the same moon. For example, if you need to change to europa, 
+  then do linux command:
+  > ssh europa
+  It will prompt for your password.
+
+   
+POSIX Message Queues:
+
+  This lab used System V message queues.  
+  Linux also supports POSIX Message Queues. 
+  They have basically the same functionality, but POSIX message queues were 
+  implemented later, so they address some of the shortcomings of System V 
+  message queues. Nonetheless, some developers still prefer System V.
+
+  You are not "responsible" for POSIX Message Queues for cps590. However, if
+  you are interested in comparing them to System V MQs, and seeing how they
+  work, this provides some information:
+  https://www.opensourceforu.com/2021/05/the-usefulness-of-posix-message-queues/

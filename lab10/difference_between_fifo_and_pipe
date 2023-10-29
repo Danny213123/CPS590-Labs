@@ -1,0 +1,22 @@
+
+mkfifo() creates a file system node of type FIFO. 
+This pathname can then be passed to open() and used for IPC (inter-process communication). 
+Data put into the FIFO is read back out in the order it was written. 
+FIFO's are typically used between multiple processes that need to communicate. 
+Due to the different processes, they need a common name that can be used to access the 
+FIFO, hence the creation of a file system node. 
+
+The problem with FIFO's is that they need to also be explicitly deleted, as they have 
+file system persistence. If a process with a FIFO open crashes, it won't be deleted. 
+
+pipe() creates a set of descriptors in the current process that are tied to each other. 
+One end of the pipe is the write end, and the other the read end. What you write to 
+one end can be read from the other. The only way to access a pipe is by the file 
+descriptor returned in the array passed to pipe(). Therefore, it is only useful for 
+the process that calls pipe and its future children. 
+
+Pipes are useful for IPC between parent/child(s). The advantage of pipes over FIFOs is 
+that they don't have to be explicitly cleaned up. When all open descriptors are closed 
+(as happens when a process terminates), the pipe is disposed of by the kernel.
+
+From: http://forums.devshed.com/ but no longer available

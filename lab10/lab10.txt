@@ -1,0 +1,32 @@
+CPS590 Lab10
+
+Submit 
+lab10Answers.txt (your answer to question 1 below)
+kirkKeyPipe.c    (from question 2 below)
+spockKeyPipe.c   (from question 2 below)
+
+
+
+0. Read about the topic of NAMED PIPES in file InfoNamedPipes.pdf in this directory.
+   It is also available at http://www.cs.torontomu.ca/~dwoit/InfoNamedPipes.pdf
+   Note that somewhere in the pdf it says "ls ?l" but it should read "ls -l"
+   Understand Named Pipes.
+
+1. The "halfduplex" programs from the pdf have been saved in this directory.
+   Copy them to your filespace and run them as shown in the InfoNamedPipes.pdf file.
+   Compare the halfduplex.h file to the one in the pdf file and note one line
+   differs:
+         #define HALF_DUPLEX             "/tmp/halfduplex"
+   was changed to:
+         #define HALF_DUPLEX             "myPipe"
+   Explain what would have happened if we had not made this change, and all students
+   in the class were running the programs at once?
+  
+2. Re-write the kirkKey and spockKey programs from previous lab using
+   a named pipe as the method of IPC (Inter-Process Communication), where the 
+   command line argument is the name of the pipe.
+   Note that functions to close and delete a named pipe are close and unlink, 
+   respectively. 
+   Name your programs kirkKeyPipe.c and spockKeyPipe.c
+
+

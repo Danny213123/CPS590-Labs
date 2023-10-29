@@ -1,0 +1,208 @@
+Lab02
+-----
+Note there are 2 files to submit for this lab.
+Incorrectly named files are not graded and recieve zero.
+
+Type your answers to the following questions into a file named 
+lab02Answers.txt: 1,2,6,8,9,10 
+Submit:
+  -lab02Answers.txt 
+  -P4.c (program for question 13)
+
+[In the following, > is used to denote a Linux shell prompt]
+
+Read this section of your text: "2.10 Linux" and answer the following questions.
+
+1. Linux uses a monolithic kernel approach, but has some architecture that
+   confers benefits typically associated with micro-kernels.
+   What is it about the modern Linux architecture/structure that is more 
+   similar to a micro-kernel than to the original, traditional monolithic kernel?
+
+2. The modern Linux architecture provides Linux some benefits typically
+   associated with micro-kernels. Briefly what are some benefits?
+  
+3. Page 88 Ed9 (94 Ed8) notes that the kernel uses signals to call into a running 
+   program (process).  When a signal, S, is sent to a process, P, the OS interrupts 
+   P, and executes the signal handler for S. 
+
+   A user can also use signals to call into a running program. This can be done
+   from the keyboard. For example, ctrl-c sends the SIGINT signal to the process 
+   currently executing in the foreground.  The signal handler for SIGINT closes down 
+   any resources the program was using (e.g., closes open files), and then terminates
+   the process.
+
+   Look at program P1.c and understand what it does.
+   Compile P1.c into executable P1.
+   Run P1 (giving it an appropriate argument).
+   Let it run for several seconds and verify the output is what you expected.
+   Send P1 an Interrupt signal (SIGINT) from the keyboard by typing ctrl-c
+   How do you know the program was terminated?
+
+4. 
+   (a)
+   Run P1 (with appropriate argument).
+   Send P1 a Stop signal (SIGSTOP) from the keyboard by typing ctrl-z
+   Note what was printed after you stopped the process.
+   (b)
+   Run P1 (with appropriate argument) AGAIN.
+   Send P1 a Stop signal (SIGSTOP) from the keyboard by typing ctrl-z
+   Note what was printed after you stopped the process.
+
+   What was the difference between what was printed in parts (a) and (b)?
+
+5. Find the job numbers of both your P1 processes using the command: jobs 
+   Find the process_ids of both your P1 processes using the command: ps -f 
+   What are they?
+
+6. Send your SECOND P1 a Continue signal (SIGCONT) from the keyboard by using the
+   fg command (foreground) with the appropriate job_number, as in the following,
+   assuming 4 is the job_number (use your own job_number, which you can see with
+   the jobs command.):
+   > fg %4
+   Now you should have the second P1 in the foreground, and the first P1 stopped.
+   Now terminate both processes (using as many steps as you need to).
+   What commands did you use to terminate them?
+
+
+SIGNALS (via Linux kill command)
+--------------------------------
+Signals may also be sent from the keyboard by using the Linux kill command.
+For example, the SIGINT signal can be sent by command:
+	kill -SIGINT PID
+where PID is the process_id of your running program.
+
+Note: you can obtain the process_ids of all your processes on a host (even 
+those from different shell windows) by typing either of these in a shell window 
+(where userid is your linux login name):
+    > ps -a
+    > ps -u userid | grep 'pts/'
+If you want to see the arguments to your processes, use the easy-to-remember 
+option to ps and filter out system processes:
+    > ps -fu userid | grep 'pts/'
+
+Remember, you can run a program in the background by putting a & after the command,
+as in:
+    > P1 X &
+
+7. Run P1 (with argument A) IN THE BACKGROUND 
+   Run P1 (with argument B) IN THE FOREGROUND
+
+8. Open a second shell window. FROM THIS SECOND WINDOW, use the -u option with 
+   the ps command to obtain both your P1 process_ids.
+   FROM YOUR SECOND SHELL WINDOW, terminate both your P1 processes by sending them 
+   each a SIGINT signal. 
+   What commands did you use?
+
+9. Briefly describe the difference between SIGINT and SIGKILL (try google or
+   man -7 signal in bash shell).
+
+10. In question 6 above, the fg command was used to make a process resume.
+    You could also get the process to resume by sending it the continue signal
+    (SIGCONT), with your own PID, as in:
+        > kill -SIGCONT PID
+
+    In the first shell window, run P1 with appropriate argument.
+    In the second window, use ps to obtain the process_id of P1.
+    FROM THE SECOND SHELL WINDOW:
+           stop P1 
+           continue (resume) P1 
+           stop P1 
+           continue (resume) P1 
+           terminate P1
+    What commands did you use?
+
+
+SIGNAL NUMBERS
+---------------
+It is BEST to use the signal name, as in SIGINT.
+However, each signal is associated with an integer number which may also be used.
+For example, SIGINT is 2, so a SIGINT could be sent to process with PID 2242 by:
+    > kill -2 2242
+A list of signals and corresponding numbers is found several pages down in
+    > man 7 signal
+
+Note: if you are viewing the text-based man page via man on an ssh terminal,
+you can skip down to the signal list by searching for "Comment" while displaying
+the man page; i.e., by typing:
+    /Comment
+
+Alternately, you could look at web-based man pages such as:
+https://manpages.debian.org/buster/manpages/signal.7.en.html
+
+11. What is the signal number for SIGKILL?
+
+
+SIGNAL HANDLERS
+---------------
+The OS has default signal handlers for all the signals.
+However, a user can register their own signal handler for process P; the user's 
+signal handler overrides the default signal handler.
+
+A C program may register its own signal handler for a signal by using the C signal 
+function from signal.h.
+For example, the following statement registers a function named someFunc to be the
+signal handler for the SIGINT signal:
+    signal(SIGINT, someFunc);
+Whenever the process receives a SIGINT, it will pass control to function someFunc.
+The signal handler (someFunc) may do any action it desires; possibly even exiting 
+the program.
+
+Look at program P2.c
+It registers a signal handler for the SIGINT signal.
+Compile and run P2.c
+Try killing it with ctrl-c 
+
+12. Kill/terminate your P2 function.
+    What command(s) did you use?
+
+
+SENDING SIGNALS FROM OTHER PROCESSES
+------------------------------------
+Signals can be sent to processes from the shell by using the kill command, as above.
+Signals may also be sent from other processes using the C kill function from
+signal.h (also needs sys/types.h).
+For example, consider the following C statement (function call):
+    kill(2765, SIGINT);
+It sends the SIGINT signal to the process whose process_id is 2765.
+
+Look at P3.c. It expects a process_id as a command line argument (a string). 
+It casts the process_id from a string to a long, and uses the kill function
+to send a SIGINT to the process having that process_id. 
+
+Open 2 shell windows if you have not done so already.
+In the first shell window compile P3.c into executable P3
+In the second window, compile P2.c into executable P2 (if you have not already).
+
+In window 2: run P2
+In window 1: 
+    use the ps command to get the process_id of P2
+    Use P3 to send SIGINT to P2 (running in window 2).
+
+13. Write a program named P4.c that sends the SIGKILL (sure kill) to a process
+    whose PID is given as a command line argument. Compile P4.c into executable P4
+
+    In window 2: run P2
+    In window 1: 
+        use the ps command to get the process_id of P2
+        Use P3 to send SIGINT to P2 (running in window 2).
+        Use P4 to terminate P2 (running in window 2).
+
+
+TRAP
+----
+A bash shell program may register its own signal handler for a signal using the 
+trap utility.
+Look at how to use traps (and shell functions) at the following site:
+https://www.linuxcommand.org/lc3_wss0150.php
+(If the site is down, you can get the gist by opening traps.html in a browser.)
+
+14. Write a shell program named P5.sh with the same functionality as the main
+    loop (only) in P2.c (i.e., loops for 80 seconds. Each second echos "P2" on 
+    stdout) except it echos P5 instead of P2.
+
+15. copy P5.sh to P6.sh. 
+    Modify P6.sh so that it traps SIGINT and handles it by calling a function that
+    prints "I don't think so". Thus P6.sh behaves like P2.c
+
+
+

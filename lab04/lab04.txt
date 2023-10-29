@@ -1,0 +1,72 @@
+Lab04 
+
+There are 3 files to submit for this lab.
+Incorrectly named files are not graded and recieve zero (if lab is 
+to be graded).
+
+Type your answers to the following questions into a file named 
+lab04Answers.txt:  1, 2
+
+Submit:
+lab04Answers.txt
+clone_mpmProcess.c (from question 3)
+clone_mpmThread.c  (from question 4)
+
+-------------------------------------------------------------------------------------
+
+cloneProcess.c is a program in which the main process spawns a child process.
+cloneThread.c  is a program in which the main process spawns a "thread" (like a 
+               lightweight process).
+
+Note that these programs use a file named test.file
+Make sure test.file is in the directory from which you run the executables.
+
+1)	Run cloneProcess
+	
+	Your output should be (except for pids):
+		The variable was: 9
+		Part after clone has pid 10992
+		I am 10993 and my parent is 10992
+		The variable is now: 9
+		Read from the file: a
+
+	Explain why the file closure and the variable modification in function
+        do_something are not recognized (variable has old value, and file still 
+        open).
+
+
+2) 	Run cloneThread
+	Your output should be (except for pids):
+		The variable was: 9
+		Part after clone has pid 11051
+		I am 11052 and my parent is 11051
+		The variable is now: 42
+		File Read Error: Bad file descriptor
+
+	Explain why the file closure and the variable modification ARE
+	recognized (variable has new value, and file closed).
+
+3) 	Copy file fork_mpm.c into a file named clone_mpmProcess.c
+	Modify clone_mpmProcess.c so that it accomplishes the same thing, but by using 
+	clone instead of fork. Your output should be (except for pids):
+		> clone_mpmProcess
+   
+		This is process(thread) 11501.
+		x+y=1
+		> 
+		This is process(thread) 11502. 
+		x+y=7
+
+
+4) 	Copy clone_mpmProcess.c to clone_mpmThread.c and modify the latter so that
+	it spawns a thread (some call it a lightweight process) instead of a process.
+	Your output should be (except for pids):
+		> clone_mpmThread
+
+		This is process(thread) 11504.
+		x+y=1
+		> 
+		This is process(thread) 11505. 
+		x+y=8
+
+   

@@ -1,0 +1,105 @@
+Lab 06
+
+Type your answers to the following questions into file lab06Answers.txt:
+Questions: 2,3,5,8
+
+There are 2 files to submit for this lab:
+lab06Answers.txt
+killSem.c
+
+
+--------------------------------------------------------------------------
+Part 1  - unnamed semaphores
+--------------------------------------------------------------------------
+
+1. Compile thread2.c (remember the -lpthread flag).
+   Run it numerous times, and notice the output sometimes differs.
+   You can run it 100 times using something like this:
+   gcc thread2.c -pthread ; for i in {1..100} ; do a.out ; done
+
+2. Explain why the variable myglobal is usually not 40.
+   Type your answer in file lab06Answers.txt
+
+3. Explain in what special case myglobal would be 40.
+   Type your answer in file lab06Answers.txt
+
+4. Learn about POSIX semaphores using the man pages
+   man sem_overview
+   man sem_init
+   etc.
+   You could also use any web-based man pages if you prefer: 
+   e.g., http://linux.die.net/man/7/sem_overview
+
+
+5. Copy thread2.c to threadSem.c, and modify threadSem.c to use 
+   an UNNAMED semaphore to synchronize the update of myglobal.
+   You must use the semaphore efficiently, i.e., keep the critical 
+   sections as small as possible.
+   You must use functions:
+       sem_wait
+       sem_post
+       sem_init
+       sem_destroy
+   Run threadSem numerous times to verify myglobal is always 40.
+   Given your various runs, what can you say about the interleaving
+   of parent and child threads during run-time?
+   Type your answer in file lab06Answers.txt
+   
+-------------------------------------------------------------------------------
+Part 2  - named semaphores
+-------------------------------------------------------------------------------
+Suppose the sysadmin always runs a number of important programs in the background.
+Two such programs/processes might be:
+
+suspicious.c
+   reports a list of users who have done something suspicious in the past n minutes 
+   (or it says: nothing suspicious to report).
+
+badpc.c
+   reports a list of lab machines that have gone down in the past n minutes.
+   (or it says: no PCs to report).
+
+
+6. Compile and run suspicious.c to see how it works. Use ctrl-c to terminate it.
+   Make sure it's terminated (use various commands from previous labs.)
+
+7. Compile and run badpc.c to see how it works. Use ctrl-c to terminate it.
+   Make sure it's terminated (use various commands from previous labs.)
+
+8. In order to continuously run these programs, the sysadmin copies-and-pastes 
+   these two commands into a shell window:
+        badpc &
+        suspicious &
+   
+   Copy-and-paste the two commands above into a shell window, and observe
+   the output.  What happens? Why?
+   Note: terminate processes as per previous labs, from the same tty (shell
+         window) or another tty. 
+   Type your answer in file lab06Answers.txt
+
+9. Programs suspiciousSleep.c and badpcSleep.c are similar to the programs
+   above, except they use sleep instead of busy waiting. Compile them and
+   run them concurrently. Notice that using sleep does not make them behave.
+   Copy suspiciousSleep.c to suspiciousSem.c 
+   Copy badpcSleep.c      to badpcSem.c 
+   Modify these two  *Sem.c  programs to use a NAMED SEMAPHORE to 
+   synchronize writing to stdout. Your semaphore's name must start with your
+   linux userid; e.g., I could name my semaphore dwoit72 or dwoitxyz etc.
+   You must use the semaphore efficiently, i.e., keep the critical sections 
+   as small as possible.  You must check the return value of all semaphore 
+   function calls; if any fail, use perror to report this and then exit. 
+
+10.
+    Named semaphores persist, even when programs aren't using them
+    (they exist in /dev/shm/ at the last "value" they had).
+    To see which semaphores in /dev/shm belong to you, you could do a command
+    such as the following (using your OWN userid of course): 
+      ls -l /dev/shm | grep dwoit 
+    To destroy your named semaphore, simply use the rm command to delete 
+    it from /dev/shm/ 
+
+    Another way to delete a named semaphore is to use the sem_unlink function.
+    Write a program named killSem.c to delete the named semaphore created by
+    your *Sem.c programs. Verify it works by running it and verifying your
+    named semaphore has been removed from /dev/shm
+

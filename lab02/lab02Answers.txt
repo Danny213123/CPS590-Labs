@@ -1,0 +1,56 @@
+Question 1:
+
+What is it about the modern Linux architecture/structure that is more similar to a micro
+kernel than to the original, traditional monolithic kernel?
+
+	1. Microkernels allow non-kernal, user features such as device drivers, file servers and UNIX server.
+	   This is achieved on Linux through modules unlike on the traditional monolithic kernel.
+	2. Both micro-kernel and Linux allow for the ability to run systems calls in user space through
+	   system call interfaces.
+	3. Both Linux and Micro-kernels are made for multitasking. As micro-kernel allows for more than one
+	   process to run simultaneously, each on a different processor, same as Linux.
+	4. Scaling, both Linux and micro-kernels allow vendors to offer a range of products based on the
+	   number of processors configured in the system.
+	5. Linux is extremely modular, so it's easier to scale than the original monolithic architecture,
+	   something it shares with the micro-kernel architecture.
+
+Question 2:
+
+The modern Linux architecture provides Linux some benefits typically associated micro-kernels.
+Breifly, what are some benefits?
+ 
+	1. Security: both Linux and micro-kernels's modular architecture allow Linux systems
+	   to isolate it's modules, reducing the damage of attacks on the system.
+	2. Incremental Growth: Performance of a Linux system can be enchanged by adding additional
+	   processors.
+	3. Scaling: Vendors offer a range of products based on the number of processors
+	   configured on the system
+
+Question 6:
+
+	1. kill %4 (terminate foreground)
+	2. kill %1 (terminate stopped)
+
+Question 8:
+
+	1. kill -SIGINT PID(P1 Background)
+	2. kill -SIGINT PID(P1 Foreground)
+
+Question 9:
+
+	Sigint is a signal sent to a process as an interupt, requesting it to clear up it's process/operation
+	and terminate itself.
+
+	Sigkill is like a force-terminate signal, which is sent to a process to forcefully terminate it
+	ignoring the usual pre-termination process of clearing up itself.
+
+	Sigkill is like using Task manager to forcefully destroy a process that isn't closing itself or is not
+	responding whereas Sigint allows the process to clean up and terminate itself.
+
+Question 10:
+
+	1. kill -SIGSTOP PID
+	2. kill -SIGCONT PID
+	3. kill -SIGSTOP PID
+	4. kill -SIGCONT PID
+	5. kill -SIGTERM PID

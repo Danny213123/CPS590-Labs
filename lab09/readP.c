@@ -15,11 +15,11 @@ int main(int argc, char *argv[])  //expects pid of writer as clarg
   shmid = shmget(SHMKEY, 128, 0666);
   pint = (int*) shmat(shmid, 0, 0);
 
-  while(*pint != -1);   /*busy wait until writer sets the flag to indicate
+  while(*pint != -1); 	/*busy wait until writer sets the flag to indicate
                         writer finished writing*/
-
-  for(i = 0; i < 10; i++)
-          printf("%d\n", *pint++);      /*display sh. mem*/
-
-  kill(pid, 10);        /*signal writer that's OK to remove shmem*/
+  
+  for(i = 0; i < 10; i++)  
+	  printf("%d\n", *pint++); 	/*display sh. mem*/
+  
+  kill(pid, 10);	/*signal writer that's OK to remove shmem*/
 }

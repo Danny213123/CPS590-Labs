@@ -1,0 +1,40 @@
+Lab07
+
+There is 1 file to submit for this lab:
+lab07EvenOdd.c
+
+Read the part about condition variables in (past mutexes):
+http://www.yolinux.com/TUTORIALS/LinuxTutorialPosixThreads.html#SYNCHRONIZATION
+The example program named cond1.c is in this directory for your reference. 
+Note that you will use "gcc", not "cc" to compile it.
+
+Write a program named lab07EvenOdd.c that is similar to cond1.c except that:
+  the threads also increment a global int named total, which starts at zero.
+  thread1: increments count only when count is currently an even number
+           increments total by 2 when count is currently an even number
+  thread2: increments count only when count is currently an odd  number
+           increments total by 1 when count is currently an odd number
+
+Further Requirements:
+ -a thread prints the value of total AFTER the increments are performed.
+ -threads terminate when count reaches COUNT_DONE
+ -before threads start, main prints the initial value of total 
+ -after threads terminate, main prints the final value of total 
+ -thread2 may test count to determine its parity, but thread1 may not
+ -thread1 always increments count by 1 and total by 2 when it is signalled 
+  (unless it terminates)
+ -program must be robust
+ -Your lab07EvenOdd.c output should look identical to this:
+Starting total: 0
+Total value functionEven: 2
+Total value functionOdd:  3
+Total value functionEven: 5
+Total value functionOdd:  6
+Total value functionEven: 8
+Total value functionOdd:  9
+Total value functionEven: 11
+Total value functionOdd:  12
+Total value functionEven: 14
+Total value functionOdd:  15
+Final total: 15
+

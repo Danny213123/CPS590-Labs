@@ -1,0 +1,150 @@
+Lab09
+
+There are 4 files to submit for this lab:
+P1.c, P2.c
+P1sync.c, P2sync.c
+
+IMPORTANT: Your processes use infinite loops, so it is important to 
+make sure they're killed. Do "ps" often and kill old processes, or 
+you can run out of resources and be unable to complete the lab.
+
+
+Shared Memory
+
+Look at writeP.c and readP.c and see how they share memory.
+Try running them (see RUNNING READ/WRITE below to see how prof ran them.)
+Note that readP uses the kill system call to signal writeP.
+Since kill requires the processID of writeP (to send the signal to), 
+writeP's processID is provided as a command line argument to readP.
+
+1.
+Implement the two programs from Problem 5.3 (Ed8) or 5.6 (Ed9) of your 
+text. Name the files P1.c and P2.c 
+
+Add some additional functionality as follows:
+ -P1 creates a shared memory segment that can hold at least 2 ints
+ -P2 accesses this shared memory but does not create/destroy it
+ -variable x from Problem 5.3/6 is the first integer of shared memory.
+  Since shared memory provides a pointer, your programs use *x instead of x
+ -make the printfs also print the process (P1 or P2) and the current
+  iteration of the while loop (add counter i). Specifically,
+  P1 prints the following, where myPid is the process id, and i is the 
+     iteration number:
+    printf("P1 %u: x is %d i=%d\n",myPid,*x,i)
+  P2 prints the same, except "P2" instead of "P1"
+ -P1 catches signals and calls cleanup like writeP.c does
+ -P2 does not need to kill P1. You can simply kill processes with a signal 
+  from the shell
+ -P[12].c cut off the printfs after 10, so that you can see the top
+  of your output. (One way is to count how many times printf happens, and
+  stop doing further printfs once the count passes 10).
+
+
+ -compile/run your P1 and P2 and verify it is possible
+  x does not remain 10. See RUNNING P1 and P2 below
+
+------------------------------------------------------------------------------------
+RUNNING READ/WRITE:
+
+> ./writeP &
+[1] 1603939
+> ./readP 1603939
+-1
+1
+2
+3
+4
+5
+6
+7
+8
+9
+[1]+  Done                    ./writeP
+> 
+------------------------------------------------------------------------------------
+RUNNING P1 AND P2 (each in their own shell window on the same machine).
+
+There were 10 printfs each in total, but only 5 each are included below. 
+The values of x can differ for different runs.
+
+Window 1:
+> P1
+P1 1631192: x is 8 i=270070
+P1 1631192: x is 9 i=270071
+P1 1631192: x is 9 i=270072
+P1 1631192: x is 8 i=270073
+P1 1631192: x is 8 i=270074
+
+Window 2:
+> P2
+P2 1631193: x is 9 i=90078
+P2 1631193: x is 9 i=90079
+P2 1631193: x is 8 i=90204
+P2 1631193: x is 11 i=114337
+P2 1631193: x is 11 i=114338
+
+  --ctrl-C and kill if necessary to stop them. MAKE SURE TO KILL THEM!!
+------------------------------------------------------------------------------------
+
+2.
+ Copy P1.c and P2.c to P1sync.c and P2sync.c
+ Make P1sync.c and P2sync.c synchronize so that they take turns doing 
+ their while loops. P1sync does one iteration of its while, then P2sync 
+ does one iteration, then P1sync does another iteration, then P2sync
+ another, etc.
+
+ Accomplish this synchronization using the SECOND integer of shared memory.
+ (see readP.c and writeP.c for how to access the second integer of shared memory).
+ When the second integer is 1, it is P1sync's turn to do one iteration of its
+ while loop (modify *x). When the second integer is 2, it is P2sync's turn. 
+ Once P1sync completes an iteration, it assigns 2 to the second integer so 
+   P2sync iterates next.
+ Once P2sync completes an iteration, it assigns 1 to the second integer so 
+   P1sync iterates next.
+
+ When P1sync and P2sync take turns updating *x, it will always be 10 by the 
+ time programs get to the if statement with the printf.
+
+ Compile and run P1sync and P2sync and verify nothing is printed, because 
+ *x is always 10. MAKE SURE TO KILL THEM!!
+
+ P[12]sync.c are like P[12].c in that only P1sync creates/destroys shared
+ memory, etc.
+
+------------------------------------------------------------------------------------
+LISTING AND REMOVING SHARED MEMORY:
+
+Shared memory segments can be viewed/deleted from the shell using
+the commands:
+  ipcs
+  ipcrm
+
+
+
+When I DO have a shared memory segment, listing, and removing it goes
+something like this:
+>  ipcs -m
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x0000004b 1594261505 dwoit      666        128        0                
+> ipcrm -m 1594261505   
+> ipcs -m
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+
+>
+Note that to remove shared memory, there must be NO PROCESSES still 
+attached to it (a zero under "nattch" above). If there ARE processes 
+attached, you need to fix that first (end process, kill it, etc.)
+
+The final ipcs showed there are now no shared memory segments.
+Note1: if you run ipcs -m in the shell AFTER running writeP and readP, 
+there will be no shared memory listed, because writeP deleted it.
+Note2: ipcs -m might list ALL shared memory segments, even those not owned
+by you. Ignore those you don't own, or pipe to grep to show only yours
+
+If you implemented P1*.c correctly, it will remove the shared memory
+when it is killed using a signal
+
+

@@ -1,0 +1,76 @@
+CPS590 Lab03
+------------
+
+Incorrectly named files are not graded and recieve zero.
+Type your answers to the following questions into a file named 
+lab03Answers.txt: 3, 4, 5
+Submit lab03Answers.txt
+
+1) Compile pids1.c into executable named pids1
+   (Note: when pids1 runs, it takes several seconds to complete)
+   Run pids1 to see the Process IDs of the parent and child processes.
+   Once the line starting with "This is Child" appears, you may need
+   to press enter to get your prompt.
+   Inspect the code to see what is happening.
+
+   Open another shell window in the same moon.
+   In shell 1 run program pids1, and while pids1 is sleeping, quickly...
+   In shell 2, do command: ps -a
+
+   Check that the process IDs shown with the ps command in shell 2 are the same 
+   as printed by the parent and child processes running in shell 1.
+   Note:
+   You have to be quick enough. You have to do the "ps" in shell 2 while
+   the processes in shell 1 are still alive.
+
+2) Consider program pids2.c
+   It is an exact copy of pids1.c except that the lines
+    pid = getpid();
+    ppid = getppid();
+   are moved inside the if statement. The lines are duplicated for the
+   parent and child, so, syntactically, it does not alter the program.
+   Compile into pids2 and run. 
+
+3) Notice that when you run pids2, the Child process often thinks its parent 
+   has PID=1 whereas in pids1, the Child knew its parent's real PID. 
+   
+   Why? 
+   Does this differ from general information given in your text about parent
+   and child termination? Briefly explain.
+
+4) Program pids3.c is a copy of pids2.c but with all the sleep commands removed.
+   Compile and run. If you run it enough times, you will notice it usually behaves
+   like pids1 (child gets correct parent pid), but sometimes it behaves like pids2
+   (child thinks its parent's pid is 1). It is unpredictable.
+   
+   Why?
+
+   Note: if you want to see this more clearly, try running pids3 over and over, 
+   in a loop, and each time only keep the output lines that end in "1". e.g., try 
+   copying-and-pasting this into your shell window:
+   
+   while [ 1 ] ; do 
+   pids3 | grep Child 
+   done | more
+
+   This will show you that sometimes Child gets "1" as parent pid, and sometimes it 
+   gets its "birth-parent"'s pid.
+
+   **NOTE** You may need to ctrl-c a couple of times to stop the while loop.
+
+5) Copy pids3.c to pids4.c
+   Use the man pages to see what the "wait" system call does (section 2).
+   e.g. > man 2 wait
+   Use the wait function to guarantee pids4.c will get its birth-parent's pid
+   by not allowing the parent to die while the child is still running. 
+   Make sure to use "wait", and don't use any "sleep" commands at all.
+   Where did you put the wait function call? 
+   What was the exact syntax you used?
+   What headers does wait require?
+
+6) Write a program named pids5.c
+   It should spawn a child process, and then the child should attempt to
+   kill its parent. (killing as per lab02).
+   
+   Was it possible for child to kill parent?
+   How did you verify it was (or wasn't) possible?

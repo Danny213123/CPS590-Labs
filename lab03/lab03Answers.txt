@@ -1,0 +1,23 @@
+3.
+
+The difference is because in pids1, the getpid and get parent pid is called differently between pids 1 and pids 2.
+Pids 2 calls the getpid and getppid function after the sleep and fork function, meaning the parent process
+does not wait for the child process to run, which results in the child process making
+the parent process PID, 1.
+
+4.
+
+In pids3.c, there is no wait inbetween the running of the child and parent process. This time is usually meant
+to allow both the parent and child to determine their own PID but with out the delays, the behaviour is now
+determined by how fast the parent runs and finishes before it reaches the child process. If the child process
+runs faster, it will determine it's own PId before the parent process calls getpid and getppid, meaning it will
+get the correct pid and ppid.
+
+5
+
+The wait function should be placed in the parent process, so that the child process runs but before the parent
+process terminates.
+
+the syntax is: wait(NULL);
+
+The headers needed for wait to work is #include <wait.h>.

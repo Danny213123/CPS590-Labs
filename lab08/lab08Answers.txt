@@ -1,0 +1,22 @@
+3. When kirk terminates, spock also terminates because they are both connected to the same
+message queue with the same key that is generated through ftok(). When fgets(buf.mtext, size of buf.mtext, stdin
+is null, meaning there is no message entered (EOF), kirk executes the msgctl() function using the IPC_RMID
+flag which removes the message queue. This causes spock to also terminate as it's connected
+to the same message queue.
+
+4. If we start spock first, it will fail when it tries to retrieve a key through ftok() as kirk.
+
+5. When ctrl-d is done on the spock window, nothing happens because spock is always waiting for a message through
+msgrcv, and since msgrcv is a blocking call and not able to handle terminal signals like SIGTERM, it wont do anything.
+It terminates in kirk because a CTRL-D will basically be like an EOF for kirk since fgets() will recieve nothing
+and will return null, meaning kirk will break out of the while loop and delete the message queue.
+
+8. (a) to allow my partner's spockKey to recieve orders from my kirckKey on different systems, we would both have
+to agree on a common filename that is on both systems, so changes would have to come through ftok() my partner's
+spockKey and my kirkKey. The "kirk.c" would be changed to a common filename that exists on both our systems, and
+the unique identifier can be anything, but it has to be the same on both our ftoks.
+
+10. (a) The message queue where all of the messages being sent by kirk.c is responsible for handling message sends
+to each spock. The scheduling of sends is determined by the OS's scheduling algorithm. All of the spocks
+are in a blocking wait while waiting for a message from the message queue. Overall, the order in which the spocks
+recieve a message is ultimately determined by the OS schedule and the message queue.

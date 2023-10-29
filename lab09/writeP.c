@@ -20,16 +20,16 @@ void cleanup(int);
 int main (void) {
   int *pint, *ppint, i;
 
-  for (i = 0; i < 20; i++)
+  for (i = 0; i < 20; i++)  
       signal(i,cleanup); /*force any signal from 1-20 sent to this process to
-                         call handler cleanup, which will detach shared mem
+                         call handler cleanup, which will detach shared mem 
                          before exiting*/
 
   shmid = shmget(SHMKEY, 128, 0666|IPC_CREAT);
   pint = (int*) shmat(shmid, 0, 0);
   ppint = pint;
 
-  for(i = 0; i < 10; i++)
+  for(i = 0; i < 10; i++)  
       *ppint++ = i; /*load sh. mem with ints 0-9*/
 
   *pint =- 1;       /*load -1 into start of shmem*/
@@ -38,8 +38,8 @@ int main (void) {
   return 0;
 }
 
-void cleanup(int x)
-{
+void cleanup(int x) 
+{ 
       shmctl(shmid, IPC_RMID, 0);  /*detach sh mem */
       exit(0);
 }

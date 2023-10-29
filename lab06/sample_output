@@ -1,0 +1,26 @@
+.
+.
+.
+Down machines on Wed Feb  1 14:21:43 EST 2023
+Suspicious users on Wed Feb  1 14:21:44 EST 2023
+   --machine 25
+   --user 1
+   --machine 26
+   --user 2
+   --machine 27
+   --user 3
+   --machine 28
+Down machines on Wed Feb  1 14:21:47 EST 2023
+   --user 4
+   --machine 25
+Down machines on Wed Feb  1 14:21:48 EST 2023
+Suspicious users on Wed Feb  1 14:21:49 EST 2023
+   --machine 25
+   --nothing suspicious to report
+   --machine 26
+Suspicious users on Wed Feb  1 14:21:51 EST 2023
+   --machine 27
+   --machine 28
+.
+.
+.

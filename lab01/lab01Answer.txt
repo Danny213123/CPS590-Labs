@@ -1,0 +1,20 @@
+
+
+Problem 1.1
+
+Device 5 Address - 300
+Device 6 Address - 301
+
+Operation 1: OP code - 0001 | Address - 100101100 | AC - 3
+Operation 2: OP code - 0101 | Address - 1110101100 | AC - 5
+Operation 3: OP code - 0010 | Address - 100101101 | AC - 5
+
+Device 5 - 3
+Device 6 - 5
+
+Problem 1.2
+
+DMA is given priority than processor access to main memory because DMA allows for large amounts of data
+to be transferred more efficiently and quickly than processor. If the processor were given priority over
+DMA, it would cause delays as now the processor would have to have to constantly start and delay it's data transfer
+for the DMA 

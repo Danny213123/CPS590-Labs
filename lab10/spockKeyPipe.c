@@ -21,7 +21,7 @@ int main(void)
     printf("spock: ready to receive messages, captain.\n");
 
     for(;;) { /* Spock never quits! */
-        num_read = read(fd, buf, MAX_BUF_SIZE);
+	num_read = read(fd, buf, MAX_BUF_SIZE);
         if (num_read == -1) {
             perror("msgrcv");
             exit(1);
@@ -33,3 +33,4 @@ int main(void)
     close(fd);
     return 0;
 }
+

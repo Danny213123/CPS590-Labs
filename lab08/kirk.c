@@ -18,7 +18,7 @@ int main(void)
     int msqid;
     key_t key;
 
-    if ((key = ftok("common-file-name", 'B')) == -1) {
+    if ((key = ftok("kirk.c", 'B')) == -1) {
         perror("ftok");
         exit(1);
     }

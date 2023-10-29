@@ -1,0 +1,6 @@
+Question 1.
+
+Since the named pipe is created on the moon server, if the change to redefine the HALF_DUPLEX name was not made. Every
+single single who wanted to access the named pipe to read/write would be writing/reading from the same named pipe.
+By renaming the pipe to be more unique, it will avoid conflicts and ensuring each pipe has it's own seperate
+channel of communication with the process.
